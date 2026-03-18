@@ -1,0 +1,72 @@
+import os
+import shutil
+def data_extension_identificator(extension):
+# for shorthing the extension based on the type of data
+    data_sorting = {
+        ('.jpg', '.jpeg', '.png', '.gif', '.tiff', '.bmp'):"Images",
+        ('.doc', '.docx', '.pdf', '.txt', '.xlsx', '.pptx'):"Document",
+        ('.mp4', '.mov', '.avi', '.mkv', '.wmv'):"Video",
+        ('.mp3', '.wav', '.flac', '.aac'):"Audio",
+        ('.py', '.java', '.c', '.cpp', '.html', '.css', '.js'):"Code",
+        ('.zip', '.rar', '.7z', '.tar', '.gz'):"Archive"
+    }
+    for i in data_sorting:
+        if extension in i:
+            return data_sorting[i]
+    else:
+        print("Data Extension not found")
+        return "-1"
+
+def sorting(input):
+    # os.chdir(input)==mistake
+    list_of_files_and_folders = os.listdir(input)
+    # iterating through the list of file and folders present in the input directory
+    for i in list_of_files_and_folders:
+        if i.count(".")!=0 :
+            index_of_dot = i.index(".")
+            index_of_last_letter= len(i)
+            extension_name=i[index_of_dot:index_of_last_letter]
+            data_type_of_file =data_extension_identificator(extension_name)
+            
+            if data_type_of_file != -1:
+                # this block of code is to move files into a designated directory if found in dict
+                location_of_moving = f"{input}/{data_type_of_file}"
+                try :
+                    shutil.move(i,location_of_moving)
+                except shutil.Error as e:
+                    print(e)
+            else :
+                # this moves them into a custom directory called "unknown"
+                location_of_moving = input.append("/unknown")
+                try:
+                    shutil.move(i,location_of_moving)
+                except:
+                    os.mkdir(location_of_moving)
+                    shutil.move(location_of_moving)
+            
+        else:
+            # this code is to organise the downloded directories into a specific directory
+            print(os.getcwd)
+            location_of_moving = input.append("/Downloaded_directory")
+            try :
+                shutil.move(i,location_of_moving)
+            except:
+                os.mkdir(location_of_moving)
+                shutil.move(i,location_of_moving)
+    
+
+           
+
+while True:
+    input_location =input("location of for operation:")
+    print("choose operations you want to perform :")
+    print ("type 0 for exiting the programe:")
+    print("type 1 for sorting the data types:")
+    value_of_user = int(input("type your choise:"))
+    match value_of_user:
+        case 0:
+            break
+        case 1:
+            sorting(input_location)
+        case _:
+            print ("type the correct value:")
