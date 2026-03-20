@@ -23,13 +23,18 @@ def data_extension_identificator(extension):
     else:
         print("Data Extension not found")
         return "unknown"
+    
 def moves_files(source,destination):
     try:
         shutil.move(source,destination)
     except FileExistsError:
         main2(source)
+
 def rename(file_path):
     file_name = os.path.basename(file_path)
+    new_file_name = input("enter the new name:")
+    new_file_path =file_path.replace(file_name, new_file_name)
+    os.rename(file_path,new_file_path)
     # to-do
 
     
@@ -46,10 +51,12 @@ def sorting(user_input):
              # this block of code is to move files into a designated directory if found in dict
             location_of_moving = os.path.join(user_input,data_type_of_file)
             if os.path.exists(location_of_moving):
-                shutil.move(location_of_dir_files,location_of_moving)
+                # shutil.move(location_of_dir_files,location_of_moving)
+                moves_files(location_of_dir_files,location_of_moving)
             else:
                 os.mkdir(location_of_moving)
-                shutil.move(location_of_dir_files,location_of_moving)
+                # shutil.move(location_of_dir_files,location_of_moving)
+                moves_files(location_of_dir_files,location_of_moving)
         else:
             continue
 
